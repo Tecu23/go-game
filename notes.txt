@@ -1,0 +1,11 @@
+
+
+
+Golang Tic Tac Toe Game:
+    https://www.youtube.com/watch?v=JSNdFhXgUcg
+
+Min Max Algorithm for Tic Tac Toe:
+    https://www.youtube.com/watch?v=fT3YWCKvuQE
+
+Websockets
+    https://www.youtube.com/watch?v=JuUAEYLkGbM
