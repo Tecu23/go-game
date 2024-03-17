@@ -9,3 +9,4 @@ Min Max Algorithm for Tic Tac Toe:
 
 Websockets
     https://www.youtube.com/watch?v=JuUAEYLkGbM
+    https://www.youtube.com/watch?v=pKpKv9MKN-E
