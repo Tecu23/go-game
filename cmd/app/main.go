@@ -1,36 +1,16 @@
-// main package
+// Package main is the primary package of the application
 package main
 
 import (
-	"flag"
-	"fmt"
+	log "github.com/sirupsen/logrus"
+
+	"github.com/Tecu23/go-game/pkg/websocket"
 )
 
-const version = "1.0.0"
-
-type config struct {
-	port int
-	env  string
-}
-
-type application struct {
-	config config
-}
-
 func main() {
-	var cfg config
+	addr := ":3000"
 
-	flag.IntVar(&cfg.port, "port", 3000, "API server port")
-	flag.StringVar(&cfg.env, "env", "development", "Environment (development|staging|production)")
-
-	flag.Parse()
-
-	app := &application{
-		config: cfg,
-	}
-
-	err := app.serve()
-	if err != nil {
-		fmt.Println(err)
-	}
+	server := websocket.NewServer(&addr)
+	log.Info("starting websocket server")
+	server.Start()
 }
