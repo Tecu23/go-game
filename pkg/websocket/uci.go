@@ -3,6 +3,7 @@ package websocket
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 
@@ -24,21 +25,19 @@ func (srv *Server) Uci(
 	message := make(chan string)
 
 	go func() {
-		defer conn.Close()
 		defer Write(conn, "info string quit Engine")
+		defer conn.Close()
 		for {
-			messageType, p, err := conn.ReadMessage()
+			_, p, err := conn.ReadMessage()
 			if err != nil {
-				log.Error(err)
+				if err == io.EOF {
+					break
+				}
+				log.Error("here", err)
 				return
 			}
 
 			message <- string(p)
-
-			if err := conn.WriteMessage(messageType, p); err != nil {
-				log.Error(err)
-				return
-			}
 		}
 	}()
 

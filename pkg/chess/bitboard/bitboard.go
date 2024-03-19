@@ -11,26 +11,27 @@ import (
 // BitBoard reprents a 64 bits unsigned int
 type BitBoard uint64
 
+// Count should count the number of 1s in a bitboard
 func (b BitBoard) Count() int {
 	return bits.OnesCount64(uint64(b))
 }
 
-// setting a bit on the bitboard to 1 at a certain position
-func (b *BitBoard) Set(pos int) {
+// SetBit should change a bit on the bitboard to 1 at a certain position
+func (b *BitBoard) SetBit(pos int) {
 	*b |= BitBoard(uint64(1) << uint(pos))
 }
 
-// check if there is a 1 at position pos
-func (b BitBoard) Test(pos int) bool {
+// IsBitSet should check if the bit at position pos is set
+func (b BitBoard) IsBitSet(pos int) bool {
 	return (b & BitBoard(uint64(1)<<uint(pos))) != 0
 }
 
-// sets the bit at position pos to 0
-func (b *BitBoard) Clr(pos int) {
+// Clear should set the bit at position pos to 0
+func (b *BitBoard) Clear(pos int) {
 	*b &= BitBoard(^(uint64(1) << uint(pos)))
 }
 
-// removes the trailing zero and returns the position
+// FirstOne should remove the trailing zero and returns the position
 func (b *BitBoard) FirstOne() int {
 	bit := bits.TrailingZeros64(uint64(*b))
 	if bit == 64 { // the method returns 64 when the bb is 0
@@ -40,7 +41,7 @@ func (b *BitBoard) FirstOne() int {
 	return bit
 }
 
-// removes the leading zero and returns the position
+// LastOne removes the leading zero and returns the position
 func (b *BitBoard) LastOne() int {
 	bit := bits.LeadingZeros64(uint64(*b))
 	if bit == 64 { // the method returns 64 when the bb is 0
@@ -50,8 +51,8 @@ func (b *BitBoard) LastOne() int {
 	return 63 - bit
 }
 
-// returns the full bitstring (with leading zeroes) of the BitBoard
-func (b BitBoard) String() string {
+// ToString returns the full bitstring (with leading zeroes) of the BitBoard
+func (b BitBoard) ToString() string {
 	zeroes := ""
 	for ix := 0; ix < 64; ix++ {
 		zeroes = zeroes + "0"
@@ -63,7 +64,7 @@ func (b BitBoard) String() string {
 
 // Stringln returns the bitboard string 8x8
 func (b BitBoard) Stringln() string {
-	s := b.String()
+	s := b.ToString()
 	row := [8]string{}
 	row[0] = s[0:8]
 	row[1] = s[8:16]

@@ -8,6 +8,6 @@ import (
 func Write(conn *websocket.Conn, msg string) {
 	err := conn.WriteMessage(websocket.TextMessage, []byte(msg))
 	if err != nil {
-		log.Fatal("write:", err)
+		log.Error("write:", err)
 	}
 }
