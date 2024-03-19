@@ -1,9 +1,22 @@
 package websocket
 
-import "github.com/gorilla/websocket"
+import (
+	"fmt"
+
+	"github.com/gorilla/websocket"
+
+	"github.com/Tecu23/go-game/pkg/chess/engine"
+)
+
+var savedBestMove = ""
 
 func handleBestMove(conn *websocket.Conn, bestMove string) {
-	Write(conn, "info string cmd bm not implement yet")
+	if engine.Limits.Infinite {
+		savedBestMove = bestMove
+		return
+	}
+
+	Write(conn, fmt.Sprintf("info string bestMove: %s", savedBestMove))
 }
 
 func handleUci(conn *websocket.Conn) {
@@ -37,7 +50,7 @@ func handleRegister(conn *websocket.Conn, words []string) {
 	Write(conn, "info string cmd register not implement yet")
 }
 
-func handleGo(conn *websocket.Conn, toEng chan bool, words []string) {
+func handleGo(conn *websocket.Conn, toEng chan string, words []string) {
 	Write(conn, "info string cmd go not implement yet")
 }
 
@@ -46,9 +59,19 @@ func handlePonderhit(conn *websocket.Conn) {
 }
 
 func handleStop(conn *websocket.Conn) {
-	Write(conn, "info string cmd stop not implement yet")
+	if engine.Limits.Infinite {
+		if savedBestMove != "" {
+			Write(conn, fmt.Sprintf("info string bestMove: %s", savedBestMove))
+			savedBestMove = ""
+		}
+
+		engine.Limits.SetInfinite(false)
+	}
+
+	engine.Limits.SetStop(true)
 }
 
+// Possibly not necessary, the client will close the connection by just closing the socket
 func handleQuit(conn *websocket.Conn) {
 	Write(conn, "info string cmd quit not implement yet")
 }
