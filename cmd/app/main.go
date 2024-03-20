@@ -1,4 +1,3 @@
-// Package main is the primary package of the application
 package main
 
 import (

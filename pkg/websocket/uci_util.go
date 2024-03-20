@@ -2,10 +2,13 @@ package websocket
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/gorilla/websocket"
 
+	. "github.com/Tecu23/go-game/pkg/chess/constants"
 	"github.com/Tecu23/go-game/pkg/chess/engine"
+	"github.com/Tecu23/go-game/pkg/chess/position"
 )
 
 var savedBestMove = ""
@@ -39,7 +42,43 @@ func handleNewgame(conn *websocket.Conn) {
 }
 
 func handlePosition(conn *websocket.Conn, cmd string) {
-	Write(conn, "info string cmd position not implement yet")
+	// position [fen <fenstring> | startpos ]  moves <move1> .... <movei>
+
+	fen := ""
+
+	position.Board.NewGame()
+
+	cmd = strings.TrimSpace(strings.TrimPrefix(cmd, "position"))
+
+	// dividing the cmd in 2 parts, the position and the moves
+	parts := strings.Split(cmd, "moves")
+
+	if len(cmd) == 0 || len(parts) > 2 {
+		Write(conn, fmt.Sprintf("error string %v wrong length=%v", parts, len(parts)))
+		return
+	}
+
+	// splitting the position
+	alt := strings.Split(parts[0], " ")
+
+	alt[0] = strings.TrimSpace(alt[0])
+
+	if alt[0] == "startpos" {
+		fen = Startpos
+	} else if alt[0] == "fen" {
+		fen = strings.TrimSpace(strings.TrimPrefix(parts[0], "fen"))
+	} else {
+		Write(conn, fmt.Sprintf("%#v must be %#v or %#v", alt[0], "fen", "startpos"))
+		return
+	}
+
+	// Now parsing the FEN string
+	position.ParseFEN(fen)
+
+	if len(parts) == 2 {
+		parts[1] = strings.ToLower(strings.TrimSpace(parts[1]))
+		position.parseMvs(parts[1])
+	}
 }
 
 func handleDebug(conn *websocket.Conn, words []string) {
