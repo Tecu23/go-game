@@ -6,7 +6,7 @@ func (c Color) Opposite() Color {
 	return c ^ 0x1
 }
 
-func (c Color) ToString() string {
+func (c Color) String() string {
 	if c == WHITE {
 		return "W"
 	}

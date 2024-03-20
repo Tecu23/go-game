@@ -1,6 +1,9 @@
 package moves
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/Tecu23/go-game/pkg/chess/castlings"
 	. "github.com/Tecu23/go-game/pkg/chess/constants"
 )
@@ -25,6 +28,23 @@ func (m *Move) PackMove(fr, to, pc, cp, pr, epSq int, castl castlings.Castlings)
 	*m = Move(fr | (to << ToShift) | (pc << PcShift) |
 		(cp << CpShift) | (pr << PrShift) |
 		(epFile << EpShift) | int(castl<<CastlShift))
+}
+
+func (m *Move) PackEval(score int) {
+	(*m) &= Move(^EvalMask) // clear eval
+	(*m) |= Move(score+30000) << EvalShift
+}
+
+// compare two moves - only frSq and toSq
+func (m Move) CmpFrTo(m2 Move) bool {
+	// return (m & move(^evalMask)) == (m2 & move(^evalMask))
+	return m.Fr() == m2.Fr() && m.To() == m2.To()
+}
+
+// compare two moves - only frSq, toSq and pc
+func (m Move) CmpFrToP(m2 Move) bool {
+	// return (m & move(^evalMask)) == (m2 & move(^evalMask))
+	return m.Fr() == m2.Fr() && m.To() == m2.To() && m.Pc() == m2.Pc()
 }
 
 func (m Move) Cmp(m2 Move) bool {
@@ -74,3 +94,25 @@ func (m Move) Ep(sd Color) int {
 
 	return rank*8 + file - 1
 }
+
+// move without eval
+func (m Move) OnlyMv() Move {
+	return m & Move(^EvalMask)
+}
+
+func (m Move) String() string {
+	s := m.StringFull()
+	s = s[1:3] + s[5:]
+	return s
+}
+
+func (m Move) StringFull() string {
+	fr := Sq2Fen[int(m.Fr())]
+	to := Sq2Fen[int(m.To())]
+	pc := Pc2Fen(int(m.Pc()))
+	cp := Pc2Fen(int(m.Cp())) + " "
+	pr := Pc2Fen(int(m.Pr()))
+	return strings.TrimSpace(fmt.Sprintf("%v%v-%v%v%v", pc, fr, cp[:1], to, pr))
+}
+
+var PieceRules [NoPiecesT][]int // not pawns

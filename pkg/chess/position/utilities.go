@@ -93,7 +93,7 @@ func ParseFEN(FEN string) {
 	}
 }
 
-// parseMvs should parse and make the moves retrieved from the position command
+// ParseMvs should parse and make the moves retrieved from the position command
 func ParseMvs(mvstr string) error {
 	mvs := strings.Fields(strings.ToLower(mvstr))
 
@@ -226,4 +226,100 @@ func PcColor(pc int) Color {
 // Pt2pc returns pc from pt and sd
 func Pt2pc(pt int, sd Color) int {
 	return (pt << 1) | int(sd)
+}
+
+//////////////////////////////////// my own commands - NOT UCI /////////////////////////////////////
+
+// print all legal moves
+func (b *BoardStruct) PrintAllLegals() {
+	var ml moves.MoveList
+	ml.Clear()
+	b.GenAllLegals(&ml)
+	fmt.Println(len(ml), "moves:", ml.String())
+}
+
+func (b *BoardStruct) Print() {
+	fmt.Println()
+	txtStm := "BLACK"
+	if b.Stm == WHITE {
+		txtStm = "WHITE"
+	}
+	txtEp := "-"
+	if b.Ep != 0 {
+		txtEp = Sq2Fen[b.Ep]
+	}
+	key, fullKey := b.Key, b.FullKey()
+	index := fullKey & uint64(Trans.Mask)
+	lock := Trans.Lock(fullKey)
+	fmt.Printf(
+		"%v to move; ep: %v  castling:%v fullKey=%x key=%x index=%x lock=%x \n",
+		txtStm,
+		txtEp,
+		b.Castlings.String(),
+		fullKey,
+		key,
+		index,
+		lock,
+	)
+
+	fmt.Println("  +------+------+------+------+------+------+------+------+")
+	for lines := 8; lines > 0; lines-- {
+		fmt.Println("  |      |      |      |      |      |      |      |      |")
+		fmt.Printf("%v |", lines)
+		for ix := (lines - 1) * 8; ix < lines*8; ix++ {
+			if b.Squares[ix] == BP {
+				fmt.Printf("   o  |")
+			} else {
+				fmt.Printf("   %v  |", Pc2Fen(b.Squares[ix]))
+			}
+		}
+		fmt.Println()
+		fmt.Println("  |      |      |      |      |      |      |      |      |")
+		fmt.Println("  +------+------+------+------+------+------+------+------+")
+	}
+
+	fmt.Printf("       A      B      C      D      E      F      G      H\n")
+}
+
+func (b *BoardStruct) PrintAllBB() {
+	txtStm := "BLACK"
+	if b.Stm == WHITE {
+		txtStm = "WHITE"
+	}
+	txtEp := "-"
+	if b.Ep != 0 {
+		txtEp = Sq2Fen[b.Ep]
+	}
+	fmt.Printf("%v to move; ep: %v   castling:%v\n", txtStm, txtEp, b.Castlings.String())
+
+	fmt.Println("white pieces")
+	fmt.Println(b.WbBB[WHITE].Stringln())
+	fmt.Println("black pieces")
+	fmt.Println(b.WbBB[BLACK].Stringln())
+
+	fmt.Println("wP")
+	fmt.Println((b.PieceBB[Pawn] & b.WbBB[WHITE]).Stringln())
+	fmt.Println("wN")
+	fmt.Println((b.PieceBB[Knight] & b.WbBB[WHITE]).Stringln())
+	fmt.Println("wB")
+	fmt.Println((b.PieceBB[Bishop] & b.WbBB[WHITE]).Stringln())
+	fmt.Println("wR")
+	fmt.Println((b.PieceBB[Rook] & b.WbBB[WHITE]).Stringln())
+	fmt.Println("wQ")
+	fmt.Println((b.PieceBB[Queen] & b.WbBB[WHITE]).Stringln())
+	fmt.Println("wK")
+	fmt.Println((b.PieceBB[King] & b.WbBB[WHITE]).Stringln())
+
+	fmt.Println("bP")
+	fmt.Println((b.PieceBB[Pawn] & b.WbBB[BLACK]).Stringln())
+	fmt.Println("bN")
+	fmt.Println((b.PieceBB[Knight] & b.WbBB[BLACK]).Stringln())
+	fmt.Println("bB")
+	fmt.Println((b.PieceBB[Bishop] & b.WbBB[BLACK]).Stringln())
+	fmt.Println("bR")
+	fmt.Println((b.PieceBB[Rook] & b.WbBB[BLACK]).Stringln())
+	fmt.Println("bQ")
+	fmt.Println((b.PieceBB[Queen] & b.WbBB[BLACK]).Stringln())
+	fmt.Println("bK")
+	fmt.Println((b.PieceBB[King] & b.WbBB[BLACK]).Stringln())
 }

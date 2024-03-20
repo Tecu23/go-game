@@ -5,6 +5,54 @@ import (
 	"github.com/Tecu23/go-game/pkg/chess/bitboard"
 )
 
+// Evaluate constants
+const (
+	MaxEval  = +10000
+	MinEval  = -MaxEval
+	MateEval = MaxEval + 1
+	NoScore  = MinEval - 1
+)
+
+var PieceVal = [16]int{
+	100,
+	-100,
+	325,
+	-325,
+	350,
+	-350,
+	500,
+	-500,
+	950,
+	-950,
+	10000,
+	-10000,
+	0,
+	0,
+	0,
+	0,
+}
+
+var (
+	KnightFile = [8]int{-4, -3, -2, +2, +2, 0, -2, -4}
+	KnightRank = [8]int{-15, 0, +5, +6, +7, +8, +2, -4}
+	CenterFile = [8]int{-8, -1, 0, +1, +1, 0, -1, -3}
+	KingFile   = [8]int{+1, +2, 0, -2, -2, 0, +2, +1}
+	KingRank   = [8]int{+1, 0, -2, -4, -6, -8, -10, -12}
+	PawnRank   = [8]int{0, 0, 0, 0, +2, +6, +25, 0}
+	PawnFile   = [8]int{0, 0, +1, +10, +10, +8, +10, +8}
+)
+
+const LongDiag = 10
+
+// Piece Square Table
+var PSqTab [12][64]int
+
+// Engine Constants
+const (
+	MaxDepth = 100
+	MaxPly   = 100
+)
+
 const (
 	NoPiecesC = 12       // NoPiecesC is the number of total pieces
 	NoPiecesT = 6        // NoPiecesT is the number of pieces each side has
@@ -315,3 +363,10 @@ func initFen2Sq() {
 	Sq2Fen[H7] = "h7"
 	Sq2Fen[H8] = "h8"
 }
+
+const (
+	// no scoretype = 0
+	ScoreTypeLower   = 0x1                             // sc > alpha
+	ScoreTypeUpper   = 0x2                             // sc < beta
+	ScoreTypeBetween = ScoreTypeLower | ScoreTypeUpper // alpha < sc < beta
+)

@@ -90,17 +90,29 @@ func uci(input chan string, conn *websocket.Conn) {
 
 			// CUSTOM COMMANDS TO HELP WITH DEBUG AND TESTING
 		case "perft":
+			handlePerformanveTest(conn, words)
 		case "pb": // Print current board
+			handlePrintBoard(conn)
 		case "pbb": // Print all bitboard
+			handlePrintAllBitBoards(conn)
 		case "pm": // Print all legal moves
+			handlePrintAllLegalMoves(conn)
 		case "eval": // Evaluate current position
+			handleEvaluatePosition(conn)
 		case "pos":
+			handleMyPositions(conn, words)
 		case "moves":
+			handleMyMoves(conn, words)
 		case "key":
+			handleKey(conn)
 		case "see":
+			handleSee(conn, words)
 		case "qs":
+			handleQs(conn)
 		case "hist":
+			handleHistory(conn)
 		case "moveval":
+			handleMoveValue(conn)
 		default:
 			Write(conn, fmt.Sprintf("info string unknown cmd %s", cmd))
 		}
