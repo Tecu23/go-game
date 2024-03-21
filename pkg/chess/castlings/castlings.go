@@ -96,3 +96,93 @@ func (c Castlings) String() string {
 	}
 	return flags
 }
+
+func InitCastlings() {
+	// squares between K and R short castling
+	Castl[WHITE].BetweenSh.SetBit(F1)
+	Castl[WHITE].BetweenSh.SetBit(G1)
+	Castl[BLACK].BetweenSh.SetBit(F8)
+	Castl[BLACK].BetweenSh.SetBit(G8)
+
+	// squares between K and R long castling
+	Castl[WHITE].BetweenL.SetBit(B1)
+	Castl[WHITE].BetweenL.SetBit(C1)
+	Castl[WHITE].BetweenL.SetBit(D1)
+	Castl[BLACK].BetweenL.SetBit(B8)
+	Castl[BLACK].BetweenL.SetBit(C8)
+	Castl[BLACK].BetweenL.SetBit(D8)
+
+	// pawns stop short castling W
+	Castl[WHITE].PawnsSh.SetBit(D2)
+	Castl[WHITE].PawnsSh.SetBit(E2)
+	Castl[WHITE].PawnsSh.SetBit(F2)
+	Castl[WHITE].PawnsSh.SetBit(G2)
+	Castl[WHITE].PawnsSh.SetBit(H2)
+	// pawns stop long castling W
+	Castl[WHITE].PawnsL.SetBit(B2)
+	Castl[WHITE].PawnsL.SetBit(C2)
+	Castl[WHITE].PawnsL.SetBit(D2)
+	Castl[WHITE].PawnsL.SetBit(E2)
+	Castl[WHITE].PawnsL.SetBit(F2)
+
+	// pawns stop short castling B
+	Castl[BLACK].PawnsSh.SetBit(D7)
+	Castl[BLACK].PawnsSh.SetBit(E7)
+	Castl[BLACK].PawnsSh.SetBit(F7)
+	Castl[BLACK].PawnsSh.SetBit(G7)
+	Castl[BLACK].PawnsSh.SetBit(H7)
+	// pawns stop long castling B
+	Castl[BLACK].PawnsL.SetBit(B7)
+	Castl[BLACK].PawnsL.SetBit(C7)
+	Castl[BLACK].PawnsL.SetBit(D7)
+	Castl[BLACK].PawnsL.SetBit(E7)
+	Castl[BLACK].PawnsL.SetBit(F7)
+
+	// knights stop short castling W
+	Castl[WHITE].KnightsSh.SetBit(C2)
+	Castl[WHITE].KnightsSh.SetBit(D2)
+	Castl[WHITE].KnightsSh.SetBit(E2)
+	Castl[WHITE].KnightsSh.SetBit(G2)
+	Castl[WHITE].KnightsSh.SetBit(H2)
+	Castl[WHITE].KnightsSh.SetBit(D3)
+	Castl[WHITE].KnightsSh.SetBit(E3)
+	Castl[WHITE].KnightsSh.SetBit(F3)
+	Castl[WHITE].KnightsSh.SetBit(G3)
+	Castl[WHITE].KnightsSh.SetBit(H3)
+	// knights stop long castling W
+	Castl[WHITE].KnightsL.SetBit(A2)
+	Castl[WHITE].KnightsL.SetBit(B2)
+	Castl[WHITE].KnightsL.SetBit(C2)
+	Castl[WHITE].KnightsL.SetBit(E2)
+	Castl[WHITE].KnightsL.SetBit(F2)
+	Castl[WHITE].KnightsL.SetBit(G2)
+	Castl[WHITE].KnightsL.SetBit(B3)
+	Castl[WHITE].KnightsL.SetBit(C3)
+	Castl[WHITE].KnightsL.SetBit(D3)
+	Castl[WHITE].KnightsL.SetBit(E3)
+	Castl[WHITE].KnightsL.SetBit(F3)
+
+	// knights stop short castling B
+	Castl[BLACK].KnightsSh.SetBit(C7)
+	Castl[BLACK].KnightsSh.SetBit(D7)
+	Castl[BLACK].KnightsSh.SetBit(E7)
+	Castl[BLACK].KnightsSh.SetBit(G7)
+	Castl[BLACK].KnightsSh.SetBit(H7)
+	Castl[BLACK].KnightsSh.SetBit(D6)
+	Castl[BLACK].KnightsSh.SetBit(E6)
+	Castl[BLACK].KnightsSh.SetBit(F6)
+	Castl[BLACK].KnightsSh.SetBit(G6)
+	Castl[BLACK].KnightsSh.SetBit(H6)
+	// knights stop long castling B
+	Castl[BLACK].KnightsL.SetBit(A7)
+	Castl[BLACK].KnightsL.SetBit(B7)
+	Castl[BLACK].KnightsL.SetBit(C7)
+	Castl[BLACK].KnightsL.SetBit(E7)
+	Castl[BLACK].KnightsL.SetBit(F7)
+	Castl[BLACK].KnightsL.SetBit(G7)
+	Castl[BLACK].KnightsL.SetBit(B6)
+	Castl[BLACK].KnightsL.SetBit(C6)
+	Castl[BLACK].KnightsL.SetBit(D6)
+	Castl[BLACK].KnightsL.SetBit(E6)
+	Castl[BLACK].KnightsL.SetBit(F6)
+}

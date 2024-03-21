@@ -217,7 +217,7 @@ const (
 )
 
 // init the square map from string to int and int to string
-func initFen2Sq() {
+func InitFen2Sq() {
 	Fen2Sq["a1"] = A1
 	Fen2Sq["a2"] = A2
 	Fen2Sq["a3"] = A3

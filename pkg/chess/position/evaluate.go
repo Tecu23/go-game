@@ -33,7 +33,7 @@ func PcSqScore(pc, sq int) int {
 }
 
 // PstInit intits the pieces-square-tables when the program starts
-func pcSqInit() {
+func PcSqInit() {
 	for pc := 0; pc < 12; pc++ {
 		for sq := 0; sq < 64; sq++ {
 			PSqTab[pc][sq] = 0

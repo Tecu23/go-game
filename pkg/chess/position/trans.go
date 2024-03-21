@@ -188,6 +188,7 @@ var Trans TranspStruct
 
 // allocate a new transposition table with the size from GUI
 func (t *TranspStruct) New(mB int) error {
+	fmt.Print("Calling new for trans struct")
 	if mB > 4000 {
 		return fmt.Errorf("max transtable size is 4GB (~4000 MB)")
 	}
@@ -281,6 +282,7 @@ func (t *TranspStruct) Store(fullKey uint64, mv moves.Move, depth, ply, sc, scor
 	for i := uint64(0); i < 4; i++ {
 		idx := (uint64(index) + i) & uint64(t.Mask)
 
+		fmt.Println(t.Tab)
 		entry := &t.Tab[idx]
 
 		if entry.Lock == lock {

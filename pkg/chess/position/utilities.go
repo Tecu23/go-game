@@ -108,7 +108,9 @@ func ParseMvs(mvstr string) error {
 		}
 
 		// does the from square exists
+		fmt.Println(mv, mv[:2])
 		fr, ok := Fen2Sq[mv[:2]]
+		fmt.Println(fr, ok, Fen2Sq)
 		if !ok {
 			e := fmt.Sprintf(
 				"error string %s in the position command is not a correct from square",

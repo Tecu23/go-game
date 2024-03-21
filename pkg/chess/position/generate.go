@@ -13,6 +13,119 @@ var (
 	AtksKings   [64]bitboard.BitBoard
 )
 
+func InitAtksKnights() {
+	for fr := A1; fr <= H8; fr++ {
+		toBB := bitboard.BitBoard(0)
+		rk := fr / 8
+		fl := fr % 8
+		// NNE  2,1
+		if rk+2 < 8 && fl+1 < 8 {
+			to := (rk+2)*8 + fl + 1
+			toBB.SetBit(to)
+		}
+
+		// ENE  1,2
+		if rk+1 < 8 && fl+2 < 8 {
+			to := (rk+1)*8 + fl + 2
+			toBB.SetBit(to)
+		}
+
+		// ESE  -1,2
+		if rk-1 >= 0 && fl+2 < 8 {
+			to := (rk-1)*8 + fl + 2
+			toBB.SetBit(to)
+		}
+
+		// SSE  -2,+1
+		if rk-2 >= 0 && fl+1 < 8 {
+			to := (rk-2)*8 + fl + 1
+			toBB.SetBit(to)
+		}
+
+		// NNW  2,-1
+		if rk+2 < 8 && fl-1 >= 0 {
+			to := (rk+2)*8 + fl - 1
+			toBB.SetBit(to)
+		}
+
+		// WNW  1,-2
+		if rk+1 < 8 && fl-2 >= 0 {
+			to := (rk+1)*8 + fl - 2
+			toBB.SetBit(to)
+		}
+
+		// WSW  -1,-2
+		if rk-1 >= 0 && fl-2 >= 0 {
+			to := (rk-1)*8 + fl - 2
+			toBB.SetBit(to)
+		}
+
+		// SSW  -2,-1
+		if rk-2 >= 0 && fl-1 >= 0 {
+			to := (rk-2)*8 + fl - 1
+			toBB.SetBit(to)
+		}
+		AtksKnights[fr] = toBB
+	}
+}
+
+// initialize all possible King attacks
+func InitAtksKings() {
+	for fr := A1; fr <= H8; fr++ {
+		toBB := bitboard.BitBoard(0)
+		rk := fr / 8
+		fl := fr % 8
+		// N 1,0
+		if rk+1 < 8 {
+			to := (rk+1)*8 + fl
+			toBB.SetBit(to)
+		}
+
+		// NE 1,1
+		if rk+1 < 8 && fl+1 < 8 {
+			to := (rk+1)*8 + fl + 1
+			toBB.SetBit(to)
+		}
+
+		// E   0,1
+		if fl+1 < 8 {
+			to := (rk)*8 + fl + 1
+			toBB.SetBit(to)
+		}
+
+		// SE -1,1
+		if rk-1 >= 0 && fl+1 < 8 {
+			to := (rk-1)*8 + fl + 1
+			toBB.SetBit(to)
+		}
+
+		// S  -1,0
+		if rk-1 >= 0 {
+			to := (rk-1)*8 + fl
+			toBB.SetBit(to)
+		}
+
+		// SW -1,-1
+		if rk-1 >= 0 && fl-1 >= 0 {
+			to := (rk-1)*8 + fl - 1
+			toBB.SetBit(to)
+		}
+
+		// W   0,-1
+		if fl-1 >= 0 {
+			to := (rk)*8 + fl - 1
+			toBB.SetBit(to)
+		}
+
+		// NW  1,-1
+		if rk+1 < 8 && fl-1 >= 0 {
+			to := (rk+1)*8 + fl - 1
+			toBB.SetBit(to)
+		}
+		AtksKings[fr] = toBB
+	}
+}
+
 var (
 	isPawnAtkingSq = [2]func(*BoardStruct, int) bool{
 		(*BoardStruct).iswPawnAtkingSq,
